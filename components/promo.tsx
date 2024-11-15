@@ -1,0 +1,102 @@
+'use client'
+
+import Image from "next/image"
+import { Button } from "./ui/button"
+import Link from "next/link"
+import LottieAnimationFine from '@/public/LottieProgressFine.json'
+import LottieAnimationLate from '@/public/LottieProgressLate.json'
+import LottieKapiGood1 from '@/public/Lottie/LottieKapiGood1.json'
+import LottieKapiCry from '@/public/Lottie/LottieKapiCry.json'
+import LottieKapiAngry from '@/public/Lottie/LottieKapiAngry.json'
+import LottieKapiSad1 from '@/public/Lottie/LottieKapiSad1.json'
+
+
+
+
+import Lottie from "lottie-react"
+
+type Props= {
+    YourDaysLate: number
+    formattedDate: string
+}
+
+export const Promo = ({
+    YourDaysLate,
+    formattedDate,
+}: Props) => {
+
+    let sendMsg:string = ''
+    console.log('......')
+    console.log(YourDaysLate)
+
+    const lastNumber:number = Math.abs(YourDaysLate) % 10
+    console.log("lastNumber " + lastNumber)
+    let finalWord:string = ''
+    if (lastNumber == 1) {
+        finalWord = 'день'
+    } else if ([2, 3, 4].includes(lastNumber)){
+        finalWord = 'дня'
+    } else if ([5, 6, 7, 8, 9, 0].includes(lastNumber)){ 
+        finalWord = 'дней'
+    }
+
+    let isLate = false
+    if (YourDaysLate > 0) {
+	    sendMsg = "Опаздываете к экзам. на "
+        isLate = true
+	} else {
+		sendMsg = "Опережаете экзамен на " 
+        YourDaysLate = - YourDaysLate
+	}
+
+  return (
+    <div className="border-2 rounded-xl p-4 space-y-4">
+        <div className="space-y-2">
+            <div className="flex items-center gap-x-4">
+                <Lottie 
+                    animationData={ isLate ? LottieKapiSad1 : LottieKapiGood1 } 
+                    width={5}
+                    height={5}
+                    size={5}
+                    
+                />
+                {/* <Image 
+                    src="/unlimited.svg"
+                    alt="Pro"
+                    height={26}
+                    width={26}
+                /> */}
+                <div className="items-center">
+                    <h3 className="font-bold text-lg text-center"> 
+                        {sendMsg}
+                    </h3>
+
+                    <Button variant={isLate ? 'isLate' : 'isNotLate'} className="w-full">
+                        {YourDaysLate}
+                    </Button>
+
+                    <h3 className="font-bold text-lg text-center"> 
+                        {finalWord}                
+                    </h3>
+                </div>
+
+            </div>
+            <p className="text-muted-foreground">
+                 Будете готовы к экзамену {formattedDate}
+            </p>
+        </div>
+        <Button
+            asChild
+            className="w-full"
+            variant='super'
+            size='lg'
+        >
+            <Link href="/progress">
+                Прогресс
+            </Link>
+        </Button>
+
+
+    </div>
+  )
+}
