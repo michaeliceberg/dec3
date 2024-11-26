@@ -10,6 +10,7 @@ import LottieKapiCry from '@/public/Lottie/LottieKapiCry.json'
 import LottieKapiAngry from '@/public/Lottie/LottieKapiAngry.json'
 import LottieKapiSad1 from '@/public/Lottie/LottieKapiSad1.json'
 
+import LottieCroco from '@/public/Lottie/characters/LottieCroco.json'
 
 
 
@@ -26,11 +27,11 @@ export const Promo = ({
 }: Props) => {
 
     let sendMsg:string = ''
-    console.log('......')
-    console.log(YourDaysLate)
+    // console.log('......')
+    // console.log(YourDaysLate)
 
     const lastNumber:number = Math.abs(YourDaysLate) % 10
-    console.log("lastNumber " + lastNumber)
+    // console.log("lastNumber " + lastNumber)
     let finalWord:string = ''
     if (lastNumber == 1) {
         finalWord = 'день'
@@ -53,19 +54,24 @@ export const Promo = ({
     <div className="border-2 rounded-xl p-4 space-y-4">
         <div className="space-y-2">
             <div className="flex items-center gap-x-4">
-                <Lottie 
-                    animationData={ isLate ? LottieKapiSad1 : LottieKapiGood1 } 
+                
+            
+            {/* <Lottie 
+                    animationData={ isLate ? LottieCroco : LottieCroco } 
                     width={5}
                     height={5}
                     size={5}
                     
-                />
-                {/* <Image 
-                    src="/unlimited.svg"
-                    alt="Pro"
-                    height={26}
-                    width={26}
                 /> */}
+
+                <Lottie 
+                    animationData={ isLate ? LottieKapiSad1 : LottieKapiGood1 } 
+                    className="h-20 w-20"
+                />
+
+
+               
+
                 <div className="items-center">
                     <h3 className="font-bold text-lg text-center"> 
                         {sendMsg}

@@ -253,3 +253,10 @@ export const getTopTenUsers = cache (async () => {
 
 	return data
 })
+
+
+export const getAllProgresses = cache(async () => {
+	const data = await db.query.userProgress.findMany();
+
+	return data;
+});

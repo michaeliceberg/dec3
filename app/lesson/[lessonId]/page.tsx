@@ -53,11 +53,11 @@ const LessonIdPage =  async ({
 
 
 
-    const [initialPoints, initialHearts] = getUserPointsHearts(userProgress)
+    const [initialPoints, initialHearts, initialGems] = getUserPointsHearts(userProgress)
 
 
     console.log('-----in [] ----')
-    console.log(initialHearts)
+    // console.log(initialHearts)
 
 
 

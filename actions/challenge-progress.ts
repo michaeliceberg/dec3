@@ -63,7 +63,7 @@ import { revalidatePath } from "next/cache"
 
         await db.update(userProgress).set({
             hearts: Math.min(currentUserProgress.hearts + 1, 5),
-            points: currentUserProgress.points + 10
+            points: currentUserProgress.points + challengePts
         }).where(eq(userProgress.userId, userId))
 
         revalidatePath('/learn')
@@ -88,7 +88,7 @@ import { revalidatePath } from "next/cache"
 
 
 
-    console.log('|||||||||||||||| upsertChallengeProgress |||||||||| ')
+    // console.log('|||||||||||||||| upsertChallengeProgress |||||||||| ')
 
     
 
@@ -120,12 +120,13 @@ import { revalidatePath } from "next/cache"
             dateReady: '01.01.2125',
             hearts: 20,
             pts: doneRight ? challengePts : 0,
+            gems: 0,
         }]
       }]
 
 
     if (oldCourseProgress instanceof Array) {
-        console.log('YEEEEESSSSSS')
+        // console.log('YEEEEESSSSSS')
         //
         // Ищем Индекс название книги:
         //
@@ -167,7 +168,7 @@ import { revalidatePath } from "next/cache"
                     
 
                     await db.update(userProgress).set({
-                        points: doneRight ? currentUserProgress.points + 10 : currentUserProgress.points,
+                        points: doneRight ? currentUserProgress.points + challengePts : currentUserProgress.points,
                         courseProgress: oldCourseProgress
                 
                         }).where(eq(userProgress.userId, userId))
@@ -205,10 +206,11 @@ import { revalidatePath } from "next/cache"
                         dateReady: '01.01.2125',
                         hearts: doneRight ? 20 : 19,
                         pts: doneRight ? lastProgress.pts + challengePts : lastProgress.pts,
+                        gems: lastProgress.gems
                     })
 
                     await db.update(userProgress).set({
-                        points: doneRight ? currentUserProgress.points + 10 : currentUserProgress.points,
+                        points: doneRight ? currentUserProgress.points + challengePts : currentUserProgress.points,
                         courseProgress: oldCourseProgress
                     }).where(eq(userProgress.userId, userId))
                 }
@@ -225,11 +227,11 @@ import { revalidatePath } from "next/cache"
                 
                 oldCourseProgress.push(newCourseProgress[0])
 
-                console.log('NOOOOOOOOOO')
+                // console.log('NOOOOOOOOOO')
 
 
                 await db.update(userProgress).set({
-                    points: doneRight ? currentUserProgress.points + 10 : currentUserProgress.points,
+                    points: doneRight ? currentUserProgress.points + challengePts : currentUserProgress.points,
                     courseProgress: oldCourseProgress
             
                 }).where(eq(userProgress.userId, userId))

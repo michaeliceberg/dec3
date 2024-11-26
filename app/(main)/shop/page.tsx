@@ -7,6 +7,8 @@ import { redirect } from "next/navigation"
 import { Items } from "./items"
 import { getUserPointsHearts } from "@/usefulFunctions"
 import { Heart } from "lucide-react"
+import LottieShop from '@/public/Lottie/LottieShop.json'
+import Lottie from "lottie-react"
 
 const ShopPage = async () => {
 
@@ -28,7 +30,7 @@ const ShopPage = async () => {
     const isPro = !!userSubscription?.isActive
 
 
-    const [Points, Hearts] = getUserPointsHearts(userProgress)
+    const [Points, Hearts, Gems] = getUserPointsHearts(userProgress)
 
 
 
@@ -44,11 +46,25 @@ const ShopPage = async () => {
                     // points={userProgress.points}
                     hearts={Hearts}
                     points={Points}
+                    gems={Gems}
                     hasActiveSubscription={isPro}
                 />
             </StickyWrapper>
             <FeedWrapper>
                 <div className="w-full flex flex-col items-center">
+
+
+                    {/* /Users/mac/Downloads/LottieShop.json */}
+
+
+
+                    {/* <Lottie 
+                        className="h-20 w-20 pb-4" 
+                        animationData={LottieShop}
+                        loop={false}
+                    />  */}
+
+
                     <Image
                         src='/shop.svg'
                         alt='Shop'

@@ -8,6 +8,11 @@ import { useTransition } from "react"
 import { start } from "repl"
 import { toast } from "sonner"
 import dodoPizza from '@/public/dodoPizza.png'
+import { BuyMine } from "@/components/buy-mine"
+import Lottie from "lottie-react"
+import LottiePick from '@/public/Lottie/LottiePick.json'
+import LottieCoins from '@/public/Lottie/LottieCoins.json'
+import LottieGems from '@/public/Lottie/LottieGems.json'
 
 const POINTS_TO_REFILL = 10
 
@@ -50,37 +55,45 @@ export const Items = ({
 
     return (
         <ul className="w-full">
-            <div className="flex items-center w-full p-4 gap-x-4 border-t-2">
-                <Image
-                    src="/heart.svg"
-                    alt='Heart'
-                    height={60}
-                    width={60}
-                />
-                <div className="flex-1">
-                    <p className="text-neutral-700 text-base lg:text-xl font-bold">
-                        Восстановить жизни
-                    </p>
+            <div className="flex w-full justify-between">
+
+
+                
+                <div className="flex items-center  p-4 gap-x-4 border-t-2">
+                    <Image
+                        src="/heart.svg"
+                        alt='Heart'
+                        height={60}
+                        width={60}
+                    />
+                    <div className="flex-1">
+                        <p className="text-neutral-700 text-base lg:text-xl font-bold">
+                            Восстановить жизни
+                        </p>
+                    </div>
                 </div>
+
+
                 <Button
+                    className="content-center"
                     onClick={onRefillHearts}
+                    // size='buy'
                     disabled={
                         pending
                         || hearts === 5 
                         || points < POINTS_TO_REFILL
-                    }
-                >
+                    }>
                     {hearts === 5
                         ? "full"
                         : (
-                            <div className="flex items-center">
-                                <Image 
-                                    src='/points.svg'
-                                    alt="Points"
-                                    height={20}
-                                    width={20}
-                                />
-                                <p>
+                            <div className="flex justify-center w-[80px] content-center">
+                                <Lottie 
+                                    className="h-16 w-16 pb-4 content-center" 
+                                    animationData={LottieCoins}
+                                    loop={false}
+                                /> 
+
+                                <p className="content-center">
                                     {POINTS_TO_REFILL}
                                 </p>
                             </div>
@@ -88,6 +101,9 @@ export const Items = ({
                         }
                 </Button>
             </div>
+
+
+
             {/* <div className="flex items-center w-full p-4 pt-8 gap-x-4 border-t-2">
                 <Image 
                     src='/unlimited.svg'
@@ -112,6 +128,50 @@ export const Items = ({
 
 
 
+            <div className="flex items-center w-full p-4 gap-x-4 border-t-2" />
+            {/* <BuyMine /> */}
+
+
+            <div className="w-full flex justify-between">
+             <Lottie 
+                    className="h-20 w-20 pb-4" 
+                    animationData={LottiePick}
+                    // loop={false}
+                /> 
+				
+
+                <div className="flex-1">
+                    <p className="text-neutral-700 text-base lg:text-xl font-bold">
+                        Построить рудник гемов 
+                    </p>
+                    <p className="text-neutral-700 text-sm lg:text-sm">
+                        Каждый день будете получать +1 гем
+                    </p>
+                </div>
+                <Button
+                    // size='buy'
+                    disabled={ 1===1
+                    //     pending
+                        
+                    //     || points < 1290
+                    }>
+            
+					<div className="flex items-center w-[80px]">
+
+                    <Lottie 
+                        className="h-16 w-16 pb-4" 
+                        animationData={LottieCoins}
+                        loop={false}
+                    /> 
+
+						<p>
+							1990
+						</p>
+					</div>
+              
+                </Button>
+
+                </div>
 
 
 
@@ -123,44 +183,40 @@ export const Items = ({
             <div className="flex items-center w-full p-4 gap-x-4 border-t-2">
                 <Image
                     src="/dodoPizza.png"
-                    // src="/AchivementPng/AchivementBulbBW.png"
                     alt='Pizza'
                     height={60}
                     width={60}
                 />
                 <div className="flex-1">
                     <p className="text-neutral-700 text-base lg:text-xl font-bold">
-                        Додо пицца с доставкой (35 см)
+                        Додо пицца (35см) с доставкой
                     </p>
                     <p className="text-neutral-700 text-sm lg:text-sm">
                         Заказ может сделать лидер этой недели
                     </p>
                 </div>
                 <Button
+                    variant='buy'
+                    size='buy'
                     onClick={onRefillHearts}
                     disabled={
                         pending
                         || hearts === 5 
-                        || points < 1290
-                    }
-                >
-                    {hearts === 5
-                        ? "full"
-                        : (
-                            <div className="flex items-center">
-                                <Image 
-                                    src='/points.svg'
-                                    alt="Points"
-                                    height={20}
-                                    width={20}
-                                />
+                        || points < 1290}>
+
+                            {/* <div className="flex justify-center w-[80px] content-center"> */}
+                            <div className="flex items-center w-[80px]">
+                                <Lottie 
+                                    className="h-10 w-10 pb-1" 
+                                    animationData={LottieGems}
+                                    loop={false}
+                                    
+                                /> 
+
                                 <p>
-                                    1290
-                                    {/* {POINTS_TO_REFILL} */}
+                                    10
                                 </p>
                             </div>
-                        )
-                        }
                 </Button>
             </div>
 

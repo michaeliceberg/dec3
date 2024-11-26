@@ -48,11 +48,15 @@ const LessonPage =  async () => {
 
     // let initialHearts = userProgress.courseProgress[0].progress[0].hearts
 
-    const [initialPoints, initialHearts] = getUserPointsHearts(userProgress)
+    const [initialPoints, initialHearts, initialGems] = getUserPointsHearts(userProgress)
 
 
-    console.log('-----not in ----')
-    console.log(initialHearts)
+    // console.log('-----not in ----')
+    // console.log('--- Hello in ---')
+    // console.log(initialHearts)
+
+    
+
 
     return(
        

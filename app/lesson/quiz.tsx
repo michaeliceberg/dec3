@@ -1,8 +1,6 @@
 'use client';
 
 import { SuperType, challengeOptions, challengeProgress, challenges, userProgress } from "@/db/schema";
-import { CloudCog, Crown, Heart, Library, LibraryBig, SquareLibrary } from "lucide-react";
-import { headers } from "next/headers";
 import { useEffect, useState, useTransition } from "react";
 import { Header } from "./header";
 import { QuestionBubble } from "./question-bubble";
@@ -21,15 +19,19 @@ import { useHeartsModal } from "@/store/use-hearts-modal";
 import { usePracticeModal } from "@/store/use-practice-modal";
 import { Button } from "@/components/ui/button";
 
-import { cn } from "@/lib/utils";
 import LottieSelectRainbow from '@/public/LottieSelectRainbow.json'
 import LottieSelectCrown from '@/public/LottieSelectCrown.json'
 import LottieSelectDiamond from '@/public/LottieSelectDiamond.json'
 import LottieSelectSparks from '@/public/LottieSelectSparks.json'
 import LottieSelectStars from '@/public/LottieSelectStars.json'
 import LottieSelectButterfly from '@/public/LottieSelectButterfly.json'
+
+
 import Lottie from "lottie-react";
 import { useWrongAnswerModal } from "@/store/use-wronganswer-modal";
+// import Latex from "react-latex-next";
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next';
 
 type Props= {
     initialPercentage: number
@@ -105,10 +107,6 @@ export const Quiz = ({
 
     const [hearts, setHearts] = useState(initialHearts)
 
-
-    console.log('QUIZZZZZZ')
-    console.log(hearts)
-
     
     const [percentage, setPercentage] = useState(()=>{
         return initialPercentage === 100 ? 0 : initialPercentage
@@ -124,6 +122,9 @@ export const Quiz = ({
     const challengesIds = challenges.map(el => el.id)
     const challengesDone = challengeProgress.filter((el) => challengesIds.includes(el.challengeId))
    
+    console.log(challengesDone)
+
+
     const wrongChallengesId = challengesDoneWrong.map(a => a.challengeId);
     const doneChallengesId = challengesDone.map(a => a.challengeId);
 
@@ -138,7 +139,14 @@ export const Quiz = ({
 
     const [isDoneWrongChallenge, setIsDoneWrongChallenge] = useState(false)
     const [isDoneChallenge, setIsDoneChallenge] = useState(false)
-      
+    const [timesDoneWrong, setTimesDoneWrong] = useState(0)
+    const [timesDone, setTimesDone] = useState(0)
+    const [dateLastDone, setDateLastDone] = useState(new Date(2025, 4, 1))
+
+    const [testData, setTestData] = useState(999)
+
+
+
     const onClickNumber = (num: number) => {   
       
         setActiveIndex(num - 1)
@@ -148,6 +156,25 @@ export const Quiz = ({
 
         setIsDoneWrongChallenge(wrongChallengesId.includes(num-1))
         setIsDoneChallenge(doneChallengesId.includes(num-1))
+
+        // setDateLastDone(   challengesDone.filter(el => el.challengeId === num - 1)[-1].dateDone )
+
+
+        // Берем ПОСЛЕДНЮЮ дату решенного задания
+        //
+        setDateLastDone(challengesDone.filter(el => el.challengeId === num - 1)
+            [(challengesDone.filter(el => el.challengeId === num - 1)).length - 1]
+            ?.dateDone )
+
+       
+
+
+        setTimesDone(doneChallengesId.filter(x => x == num-1).length)
+        setTimesDoneWrong(wrongChallengesId.filter(x => x == num-1).length)
+
+       
+
+
     }
 
 
@@ -158,66 +185,41 @@ export const Quiz = ({
     let [challenge] = challenges.filter(el => el.id == activeIndex)
 
 
+    // ИЩЕМ СКОЛЬКО РАЗ БЫЛ СДЕЛАН ДАННЫЙ ЧЕЛЛЕНДЖ ПРАВИЛЬНО И НЕПРАВИЛЬНО
+    //
+    // let hz = challengesDone.filter(el => el.challengeId === challenge.id) 
+    // console.log(hz)
+
+
+
+
+
+
     const {open} = useWrongAnswerModal()
 
-    // // SHUFFLE FUNCTION
-    // //
-    // function Shuffle(array: any) {
-    //         let currentIndex = array.length;
-      
-    //     while (currentIndex != 0) {
-      
-    //       let randomIndex = Math.floor(Math.random() * currentIndex);
-    //       currentIndex--;
-      
-    //       [array[currentIndex], array[randomIndex]] = [
-    //         array[randomIndex], array[currentIndex]];
-    //     }
-    //   }
-      
-    
-    // const options = challenge?.challengeOptions ?? []
-
-    // useEffect(()=>{
-    //     Shuffle(options)
-    // },[activeIndex])
-
-
-
-
-
-
-
-
-
-
-       // SHUFFLE FUNCTION
+   
+    // SHUFFLE FUNCTION
     //
-    
-  
+    const options = challenge?.challengeOptions ?? []
+    //
+    useEffect(()=>{
 
-const options = challenge?.challengeOptions ?? []
-
-
-
-useEffect(()=>{
-
-    const Shuffle = (array: any) => {
-        let currentIndex = array.length;
-    
-        while (currentIndex != 0) {
-    
-        let randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-    
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
+        const Shuffle = (array: any) => {
+            let currentIndex = array.length;
+        
+            while (currentIndex != 0) {
+        
+            let randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+        
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+            }
         }
-    }
 
-    Shuffle(options)
+        Shuffle(options)
 
-},[activeIndex])
+    },[activeIndex])
 
 
 
@@ -238,6 +240,11 @@ useEffect(()=>{
     }
 
     const onContinue = () => {
+
+
+        let hz = challengesDone.filter(el => el.challengeId === challenge.id) 
+        console.log(hz)
+
         if (!selectedOption) return
 
         if (status==='wrong') {
@@ -283,6 +290,7 @@ useEffect(()=>{
                     setPercentage((prev)=> prev + 100/challenges.length)
 
                     // TODO: This is a practice
+                    //
                     if (initialPercentage===100){
                         setHearts((prev) => Math.min(prev + 1, 5))
                     }
@@ -327,12 +335,13 @@ useEffect(()=>{
     if(!challenge) {
         challenge = challenges[0]
     }
-    //TODO: РЕШИЛИ ВСЕ ЧЕЛЕНДЖИ В ЭТО ЛЕССОНЕ
+    //TODO: РЕШИЛИ ВСЕ ЧЕЛЕНДЖИ В ЭТОМ ЛЕССОНЕ
     //
 
     if(challenges.length === challengesDone.length) {
-        // console.log('WE HERE')
-        // console.log(challenge)
+        //
+        // console.log('WE HERE FINISH LESSON')
+        // 
         return(
             <>
                 {finishAudio}
@@ -389,6 +398,21 @@ useEffect(()=>{
     : challenge.question
 
 
+
+
+
+    // let listDoneThisChallenge = doneChallengesId.includes(challenge.id) ? 'secondary' 
+    // let howManyTimesDone = doneChallengesId.filter(x => x == challenge.id)
+    // let howManyTimesDoneWrong = wrongChallengesId.filter(x => x == challenge.id)
+
+
+
+    // console.log(howManyTimesDone)
+    // console.log(howManyTimesDoneWrong)
+    
+    // [....].filter(x => x==2).length
+
+
     return(
     <>
 
@@ -408,16 +432,10 @@ useEffect(()=>{
             <Lottie className="h-20 w-20 pr-5"
                     animationData={ randomLottieSelect } 
             />
-
-            {/* <SquareLibrary className={cn(
-                                "h-20 w-20",
-                                "text-neutral-400 stroke-neutral-400 pr-4")}
-                        /> */}
         
             <div className="flex justify-center">
                 
                 <div className='pt-2 grid grid-cols-6 gap-2 justify-between'>
-                    
                 {challenges.map((challenge)=>(
                     <div key={challenge.id}>
                         <Button 
@@ -444,35 +462,33 @@ useEffect(()=>{
         </div>
 
 
+
+        
+
         <div className="flex-1 mb-10">
             
             <div className="h-full flex items-center justify-center">
                 <div className="lg:min-h-[350px] lg:w-[600px] w-full px-6 lg:px-0 flex flex-col gap-y-2">
                         
-                {isDoneWrongChallenge 
-                            && (
-                                <h1 className="text-sm lg:text-lg text-center lg:text-start font-bold text-rose-500">
-                                Задание выполнено неверно 😢
-                                </h1>
-                            )
-                }
 
-                {isDoneChallenge  
-                    && !isDoneWrongChallenge && (
-                        <h1 className="text-xs lg:text-sm text-center lg:text-start font-bold text-green-500">
-                        Задание выполнено верно 👍
-                        </h1>
-                        )
-                }
 
                     <h1 className="text-lg lg:text-3xl text-center lg:text-start font-bold text-neutral-700">
-                        {title}
+                        
+                            {title}
+                    
                     </h1>
 
 
                     <div>
                         {challenge.type === "ASSIST" && (
-                            <QuestionBubble question={challenge.question}/>
+                            <QuestionBubble 
+                                question={challenge.question} 
+                                pts={challenge.points}
+                                author={challenge.author}
+                                timesDoneWrong={timesDoneWrong}
+                                timesDone={timesDone}
+                                
+                            />
                         )}
 
                         
@@ -485,6 +501,7 @@ useEffect(()=>{
                             type={challenge.type}
                             isDoneWrongChallenge={isDoneWrongChallenge}
                             isDoneChallenge={isDoneChallenge}
+                            dateLastDone={dateLastDone}
                         />
                     </div>
                 </div>

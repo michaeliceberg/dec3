@@ -218,7 +218,7 @@ const LearnPage = async () => {
 	
 	let daysToFinishWYS = Math.round(numLeftChallenge / current_ChalPerDay)
 
-	console.log(daysToFinishWYS)
+	// console.log(daysToFinishWYS)
 
 	const dateDone = new Date(dateNow.getTime() + daysToFinishWYS*(1000 * 60 * 60 * 24));
 	const formattedDate: string = format(dateDone, 'dd.MM.yyyy');
@@ -332,6 +332,7 @@ const LearnPage = async () => {
 
 	let Points:number = 0
 	let Hearts:number = 0
+	let Gems:number = 0
 
 	let hwList:number[] = [RecomNumChallengesToday, 0, 0]
 
@@ -393,9 +394,11 @@ const LearnPage = async () => {
                         dateReady: '01.01.2125',
                         hearts: 20,
                         pts: lastProgress.pts,
+						gems: lastProgress.gems
                     })
 
 					Points = lastProgress.pts
+					Gems = lastProgress.gems
 					Hearts = 20
 
                     await db.update(userProgressSchema).set({
@@ -427,6 +430,7 @@ const LearnPage = async () => {
 					dateReady: '01.01.2125',
 					hearts: 20,
 					pts: 0,
+					gems: 0,
 					}]
 				}]
 
@@ -514,17 +518,14 @@ const LearnPage = async () => {
 			<StickyWrapper>
 				<UserProgress 
 					activeCourse={userProgress.activeCourse} 
-					// hearts={userProgress.hearts}
 					hearts={Hearts} 
-					// points={userProgress.points} 
 					points={Points} 
-
+					gems={Gems}
 					
 					hasActiveSubscription={false} 
 				/>
 
 			<Promo YourDaysLate={YourDaysLate} formattedDate={formattedDate}/>
-			{/* <Quests points={userProgress.points} hwList={hwList} /> */}
 			<Quests points={Points} hwList={hwList} />
 				
 			</StickyWrapper>

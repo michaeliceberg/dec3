@@ -22,7 +22,12 @@ export const Footer = ({
     const isMobile = useMedia("(max-width: 1024px)")
 
 
-    const nicelyDoneArray = ['Красавчик! Это верный этвет!', 'Чиназес! Это верный этвет!']
+    const doneRightArray = ['Это верный ответ!', 'Чиназес! Сюда, сюда..', 'Веррррно!', 'Гениально!', 'Легчайшая для Величайшего!']
+
+
+    var randomDoneRight = doneRightArray[Math.floor(Math.random()*doneRightArray.length)];
+
+
 
     return (
         <footer className={cn(
@@ -36,7 +41,7 @@ export const Footer = ({
                 {status === "correct" && (
                     <div className="text-green-500 font-bold text-base lg:text-2xl flex items-center">
                         <CheckCircle className="h-6 w-6 lg:h-10 lg:w-10 mr-4" />
-                        Чиназес! Это верный этвет!
+                        {randomDoneRight}
                     </div>
                 )}
                 {status === "wrong" && (

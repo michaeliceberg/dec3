@@ -34,7 +34,8 @@ export const upsertUserProgress = async (courseId: number) => {
 			activeCourseId: courseId,
 			userName: user.firstName || 'User',
 			userImageSrc: user.imageUrl || '/mascot.svg',
-		});
+		}). where(eq(userProgress.userId, userId))
+		
 		revalidatePath('/courses');
 		revalidatePath('/learn');
 		redirect('/learn');
@@ -51,6 +52,71 @@ export const upsertUserProgress = async (courseId: number) => {
 	revalidatePath('/learn');
 	redirect('/learn');
 };
+
+
+
+
+export const upsertUserName = async (nickName: string) => {
+	const { userId } = await auth();
+	const user = await currentUser();
+
+	if (!userId || !user) {
+		throw new Error('Вы не авторизированны!');
+	}
+
+	const existingUserProgress = await getUserProgress();
+
+	if (existingUserProgress) {
+		await db.update(userProgress).set({
+			userName: nickName || user.firstName || 'User',
+		}). where(eq(userProgress.userId, userId))
+		
+		revalidatePath('/courses');
+		revalidatePath('/learn');
+		redirect('/leaderboard');
+	}
+
+	revalidatePath('/courses');
+	revalidatePath('/learn');
+	redirect('/leaderboard');
+};
+
+
+
+
+
+
+export const upsertUserAvatar = async (userImgSrc: string) => {
+	const { userId } = await auth();
+	const user = await currentUser();
+
+	if (!userId || !user) {
+		throw new Error('Вы не авторизированны!');
+	}
+
+	const existingUserProgress = await getUserProgress();
+
+	if (existingUserProgress) {
+		await db.update(userProgress).set({
+			userImageSrc: userImgSrc || 'cats/cat1.jpg',
+		}). where(eq(userProgress.userId, userId))
+		
+		revalidatePath('/courses');
+		revalidatePath('/learn');
+		redirect('/leaderboard');
+	}
+
+	revalidatePath('/courses');
+	revalidatePath('/learn');
+	redirect('/leaderboard');
+};
+
+
+
+
+
+
+
 
 export const reduceHearts = async (challengeId: number)=>{
 	const {userId} = await auth()

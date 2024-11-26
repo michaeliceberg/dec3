@@ -25,6 +25,7 @@ export const getUserPointsHearts = (userProgress: Props) => {
     var TodayStr = dd + "."  + mm + "." + yyyy
     let Points = 0
     let Hearts = 0
+    let Gems = 0
     let oldCourseProgress = userProgress.courseProgress
 	if (oldCourseProgress instanceof Array) {
         let indexCourse = oldCourseProgress.findIndex( el => el.course === userProgress.activeCourse?.title );
@@ -41,13 +42,14 @@ export const getUserPointsHearts = (userProgress: Props) => {
 					//
 					Points = oldCourseProgress[indexCourse].progress[indexDate].pts
 					Hearts = oldCourseProgress[indexCourse].progress[indexDate].hearts
+					Gems = oldCourseProgress[indexCourse].progress[indexDate].gems
                 }
             }
         }
     }
   
   
-    return [Points, Hearts]
+    return [Points, Hearts, Gems]
 }
 
 

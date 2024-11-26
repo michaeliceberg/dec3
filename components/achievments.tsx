@@ -27,23 +27,23 @@ export const Achievement = ({
   
     const AchievementList = [
         {
-            got: true,
+            got: false,
             imgSrcOn: "/AchievementPng/AchievementBulb.png", 
             imgSrcOff: "/AchievementPng/AchievementBulbBW.png", 
             title: "C почином!",
             description: "Решили первую задачу",
         },
         {
-            got: true,
+            got: false,
             imgSrcOn: "/AchievementPng/AchievementFrog.png", 
             imgSrcOff: "/AchievementPng/AchievementFrogBW.png", 
             title: "Лидер",
             description: "Лидер недели",
         },
         {
-            got: true,
+            got: false,
             imgSrcOn: "/AchievementPng/AchievementHW.png", 
-            imgSrcOff: "/AchievementPng/AchivementHWBW.png", 
+            imgSrcOff: "/AchievementPng/AchievementHWBW.png", 
             title: "Домосед",
             description: "Выполнили 20 ДЗ подряд",
         },
@@ -69,7 +69,7 @@ export const Achievement = ({
             description: "Вы просто арбуз",
         },
         {
-            got: true,
+            got: false,
             imgSrcOn: "/AchievementPng/Achievement100.png", 
             imgSrcOff: "/AchievementPng/Achievement100BW.png", 
             title: "100%",

@@ -26,17 +26,24 @@ const buttonVariants = cva(
 
 				sidebarOutline: 'bg-sky-500/15 text-sky-500 border-sky-300 border-2 hover:bg-sky-500/20 transition-none',
 				isLate: 'bg-rose-500/10 text-rose-500 border-rose-300 border-2 hover:bg-sky-500/20 transition-none',
-				isNotLate: 'bg-green-500/10 text-green-500 border-green-300 border-2 hover:bg-sky-500/20 transition-none',
+				isNotLate: 'bg-green-500/10 text-green-600 border-green-300 border-2 transition-none',
 				statDefault: 'bg-white text-black border-slate-200 border-2 hover:bg-slate-100 text-slate-500',
+				author: 'bg-white text-black border-slate-200 border-2 text-slate-500',
+				buy: 'bg-white text-black border-slate-200 border-2 border-b-4 active:border-b-2 hover:bg-slate-100 text-slate-500',
+				leader: 'bg-transparent text-slate-500 border-transparent border-0 hover:bg-slate-100',
+				today: 'bg-green-500/10 text-green-600 border-green-300 hover:border-green-300 hover:border-2 transition-none',
 
 			
 			},
 			size: {
 				default: 'h-11 px-4 py-2',
+				xs: 'h-7 px-2',
 				sm: 'h-9 px-3',
 				lg: 'h-12 px-8',
 				icon: 'h-10 w-10',
 				rounded: 'rounded-full',
+				buy: 'px-12 h-12',
+				leader: 'px-2 h-14'
 			},
 		},
 		defaultVariants: {

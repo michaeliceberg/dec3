@@ -2,20 +2,14 @@
 
 import { FeedWrapper } from "@/components/feed-wrapper"
 import { StickyWrapper } from "@/components/sticky-wrapper"
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import { ChangeNameInput } from "@/components/change-name"
 import { Separator } from "@/components/ui/separator"
 import { UserProgress } from "@/components/user-progress"
-import { getTopTenUsers, getUserProgress, getUserSubscription } from "@/db/queries"
-import { progressType } from "@/db/schema"
+import { getAllProgresses, getTopTenUsers, getUserProgress, getUserSubscription } from "@/db/queries"
 import { getUserPointsHearts } from "@/usefulFunctions"
 import Image from "next/image"
 import { redirect } from "next/navigation"
-
-
-
-// import LottieAnimation5 from '@/public/LottieUnit5.json'
-// import LottieAnimation5 from '@/public/LottieArchimed.json'
-// import Lottie from "lottie-react"
+import { TableLeader } from "@/components/leader-table"
 
 const LeaderboardPage = async () => {
 
@@ -23,15 +17,18 @@ const LeaderboardPage = async () => {
     const userSubscriptionData = getUserSubscription()
     const leaderboardData = getTopTenUsers()
 
+    const gotAllProgresses = getAllProgresses()
 
     const [
         userProgress,
         userSubscription,
         leaderboard,
+        allProgresses
     ] = await Promise.all([
         userProgressData,
         userSubscriptionData,
         leaderboardData,
+        gotAllProgresses,
     ])
 
     if (!userProgress || !userProgress.activeCourse) {
@@ -40,10 +37,125 @@ const LeaderboardPage = async () => {
 
     const isPro = !!userSubscription?.isActive
 
-
-
     
-    const [Points, Hearts] = getUserPointsHearts(userProgress)
+    const [Points, Hearts, Gems] = getUserPointsHearts(userProgress)
+
+
+
+
+    let BigTableLeader = allProgresses.map(cur_user_progress => {
+  
+        let progressForCourse = cur_user_progress.courseProgress
+
+        if (progressForCourse instanceof Array) {
+            let filteredCourseProgress = progressForCourse.filter(el => {
+                
+                // Фильтруем КНИГУ
+                //
+                if (el.course === userProgress.activeCourse?.title)
+                {
+                    return el
+                }
+            })
+            // console.log(filteredCourseProgress)
+            return (
+                {
+                    userName: cur_user_progress.userName,
+                    progressForCourse: filteredCourseProgress[0].progress,
+                    userImageSrc: cur_user_progress.userImageSrc
+                })
+            }        
+        }
+    )
+
+
+interface progressDaysType {
+		date: Date;
+		pts: number;
+        ptsGotToday: number;
+        hwInARow: number;
+		selfDoneRight: number;
+        
+	}[]
+
+
+	let progressDays: Array<progressDaysType> = [];
+
+   
+
+    var today = new Date();
+    var dd:number = today.getDate();
+    var mm:number = today.getMonth()+1; 
+    var yyyy:number = today.getFullYear();
+    var day1 = dd + "."  + mm + "." + yyyy
+    var day2 = dd - 1 + "."  + mm + "." + yyyy
+    var day3 = dd - 2 + "."  + mm + "." + yyyy
+    // var day4 = dd - 3 + "."  + mm + "." + yyyy
+
+
+    let ResultLeaderTable = BigTableLeader.map(nameAndProgress => {
+        let progressThisBookDays = nameAndProgress?.progressForCourse
+        
+        if (progressThisBookDays instanceof Array) {
+            progressDays = progressThisBookDays.map(day => {
+               return {
+                   date: day.date,
+                   pts: day.pts,
+                   ptsGotToday: 0,
+                   hwInARow: day.hw[2] || 0,
+                   selfDoneRight: day.selfDoneRight,
+               }
+           } )
+       }
+
+       progressDays.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0))
+       
+       for (let i = 0; i < progressDays.length - 1; i++) {
+        progressDays[i].ptsGotToday = progressDays[i].pts -  progressDays[i+1].pts
+    }
+
+       let [progDay_1] = progressDays.filter(el => el.date.toString() === day1)
+       let [progDay_2] = progressDays.filter(el => el.date.toString() === day2)
+       let [progDay_3] = progressDays.filter(el => el.date.toString() === day3)
+    //    let [progDay_4] = progressDays.filter(el => el.date.toString() === day4)
+    
+       let progDayTotable_1 = { day: day1, ptsGotToday: 0, hwInARow: 0, selfDoneRight: 0 }
+       let progDayTotable_2 = { day: day2, ptsGotToday: 0, hwInARow: 0, selfDoneRight: 0 }
+       let progDayTotable_3 = { day: day3, ptsGotToday: 0, hwInARow: 0, selfDoneRight: 0 }
+    //    let progDayTotable_4 = { day: day4, ptsGotToday: 0, hwInARow: 0, selfDoneRight: 0 }
+
+       if (progDay_1 != undefined) {
+        progDayTotable_1 = { day: day1, ptsGotToday: progDay_1.ptsGotToday, hwInARow: progDay_1.hwInARow, selfDoneRight: progDay_1.selfDoneRight }
+       }   
+
+       if (progDay_2 != undefined) {
+        progDayTotable_2 = { day: day2, ptsGotToday: progDay_2.ptsGotToday, hwInARow: progDay_2.hwInARow, selfDoneRight: progDay_2.selfDoneRight }
+       }   
+
+       if (progDay_3 != undefined) {
+        progDayTotable_3 = { day: day3, ptsGotToday: progDay_3.ptsGotToday, hwInARow: progDay_3.hwInARow, selfDoneRight: progDay_3.selfDoneRight }
+       }   
+
+    //    if (progDay_4 != undefined) {
+    //     progDayTotable_4 = { day: day4, ptsGotToday: progDay_4.ptsGotToday, hwInARow: progDay_4.hwInARow, selfDoneRight: progDay_4.selfDoneRight }
+    //    }   
+
+
+    // let lastFourDaysProgress = [progDayTotable_1, progDayTotable_2, progDayTotable_3, progDayTotable_4]
+    let lastFourDaysProgress = [progDayTotable_1, progDayTotable_2, progDayTotable_3]
+
+
+       return ({
+            userName: nameAndProgress?.userName,
+            progressDays: progressDays,
+            userImageSrc: nameAndProgress?.userImageSrc,
+            lastFourDaysProgress: lastFourDaysProgress,
+       })
+    })
+
+
+    console.log(ResultLeaderTable[0])
+    
 
 
     return (
@@ -51,18 +163,16 @@ const LeaderboardPage = async () => {
             <StickyWrapper>
                 <UserProgress 
                     activeCourse={userProgress.activeCourse}
-                    // hearts={userProgress.hearts}
                     hearts={Hearts}
-                    // points={userProgress.points}
                     points={Points}
-                    
+                    gems={Gems}
+
                     hasActiveSubscription={isPro}
                 />
             </StickyWrapper>
             <FeedWrapper>
                 <div className="w-full flex flex-col items-center">
                     
-                    {/* <Lottie animationData={LottieAnimation5} />   */}
                     <Image
                         src='/leaderboard.svg'
                         alt='Leaderboard'
@@ -77,34 +187,25 @@ const LeaderboardPage = async () => {
                     </p>
 
                     <Separator className="mb-4 h-0.5 rounded-full" />
-                    {leaderboard.map((userProgress, index)=>(
-                        <div 
-                            key={userProgress.userId}
-                            className="flex items-center w-full p-2 px-4 rounded-xl hover:bg-gray-200/50"
-                        >
-                            <p className="font-bold text-lime-700">{ index + 1 }</p> 
-                            <Avatar
-                                className="border bg-green-500 h-12 w-12 ml-3 mr-6"
-                            >
-                                <AvatarImage 
-                                    className="object-cover"
-                                    src={userProgress.userImageSrc}
-                                />
-                            </Avatar>  
-                            <p className="font-bold text-neural-800 flex-1">
-                                {userProgress.userName}
-                            </p>
-                            <p className="text-muted-foreground">
-                                {userProgress.points} XP
-                            </p>
-                        </div>
-                    ))}
 
-                    {/* {leaderboard.map((userProgress, index)=>{
-                        <div key={userProgress.userId}>
 
-                        </div>
-                    })} */}
+                    {/* Поменять ИМЯ И КАРТИНКУ */}
+
+                    <div className="flex w-full items-center space-x-2 pt-10 pb-10">
+                        <ChangeNameInput 
+                            placeholder = {userProgress.userName}
+                            imageSrc = {userProgress.userImageSrc}
+                            />
+					</div>
+
+
+                    {/* ТАБЛИЦА ЛИДЕРОВ */}
+
+                    <div className="pt-10 w-full">
+                        <TableLeader ResultLeaderTable={ResultLeaderTable}/>
+                    </div>
+
+
                 </div>
             </FeedWrapper>
             

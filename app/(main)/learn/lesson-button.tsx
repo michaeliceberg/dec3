@@ -139,38 +139,38 @@ if (cycleIndex <= 2){
                     </Button>
                 )}   
 
-            <div className="pt-8 ">
-            <div>
-                <h1 className="px-3 py-0.5 border-2 font-bold text-green-500 bg-white rounded-xl tracking-white z-10">
-                {title}                
-                </h1>
-            </div>    
+            <div className="pt-8 hover:translate-x-4 transition-transform duration-500 ease-in-out">
+                <div>
+                    <h1 className="px-3 py-0.5 border-2 font-bold text-green-500 bg-white rounded-xl tracking-white z-10">
+                    {title}                
+                    </h1>
+                </div>    
             <div>
                 <h1 className="px-3 py-0.5 font-bold text-green-500 bg-white rounded-xl tracking-white z-10">
                
-                <div className="flex flex-1">
-                    {currentLessonStat[0].done[1] > 0 && 
-                        <div className="flex mr-1">
-                            <CircleCheckBig className='h-5 w-5 stroke-2 text-green-500 mr-1' />
-                            <p className='mr-2 text-green-500 text-center font-bold '>{currentLessonStat[0].done[1]}</p>
-                      </div>
-                    }
+                    <div className="flex flex-1">
+                        {currentLessonStat[0].done[1] > 0 && 
+                            <div className="flex mr-1">
+                                <CircleCheckBig className='h-5 w-5 stroke-2 text-green-500 mr-1' />
+                                <p className='mr-2 text-green-500 text-center font-bold '>{currentLessonStat[0].done[1]}</p>
+                        </div>
+                        }
 
-                    {currentLessonStat[0].done[2] > 0 && 
-                        <div className="flex mr-1">
-                            <CircleX className='h-5 w-5 stroke-2 text-rose-500 mr-1' />
-                            <p className='mr-2 text-rose-500 text-center font-bold '>{currentLessonStat[0].done[2]}</p>
-                      </div>
-                    }
+                        {currentLessonStat[0].done[2] > 0 && 
+                            <div className="flex mr-1">
+                                <CircleX className='h-5 w-5 stroke-2 text-rose-500 mr-1' />
+                                <p className='mr-2 text-rose-500 text-center font-bold '>{currentLessonStat[0].done[2]}</p>
+                        </div>
+                        }
 
-                    {currentLessonStat[0].done[0] > 0 && 
-                        <div className="flex mr-1">
-                            <Layers className='h-5 w-5 stroke-2 text-neutral-400 mr-1' />
-                            <p className='text-neutral-400 mr-2 text-center font-bold '>{currentLessonStat[0].done[0]}</p>
-                      </div>
-                    }
+                        {currentLessonStat[0].done[0] > 0 && 
+                            <div className="flex mr-1">
+                                <Layers className='h-5 w-5 stroke-2 text-neutral-400 mr-1' />
+                                <p className='text-neutral-400 mr-2 text-center font-bold '>{currentLessonStat[0].done[0]}</p>
+                        </div>
+                        }
 
-                </div>
+                    </div>
                 
                 </h1>
             </div>    

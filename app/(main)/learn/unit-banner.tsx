@@ -102,7 +102,10 @@ export const UnitBanner = ({
 
             <div className='size-40'> 
                 {/* <Lottie animationData={LottieAnimation} />            */}
-                <Lottie animationData={LottieData[id%1000-1]} />           
+                <Lottie 
+                    animationData={LottieData[id%1000-1]} 
+                    loop={false}
+                />           
             </div>
 
 

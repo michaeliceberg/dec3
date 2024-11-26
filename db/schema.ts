@@ -13,6 +13,7 @@ import { boolean, integer, json, jsonb, pgEnum, pgTable, serial, text, timestamp
 				dateReady: string,
 				hearts: number,
 				pts: number,
+				gems: number,
 			}	
   }[]
 
@@ -67,6 +68,7 @@ export const userProgress = pgTable('user_progress', {
 					dateReady: "",
 					hearts: 0,
 					pts: 0,
+					gems: 0,
 				},]
 		},]
 	)
@@ -138,6 +140,7 @@ export const challenges = pgTable('challenges', {
 	question: text('question').notNull(),
 	order: integer('order').notNull(),
 	points: integer('points').notNull(),
+	author: text('author').notNull(),
 });
 
 export const challengesRelations = relations(challenges, ({ one, many }) => ({

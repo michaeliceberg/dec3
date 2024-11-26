@@ -2,7 +2,6 @@ import { FeedWrapper } from "@/components/feed-wrapper"
 import { StickyWrapper } from "@/components/sticky-wrapper"
 import { Progress } from "@/components/ui/progress"
 import { UserProgress } from "@/components/user-progress"
-// import { quests } from "@/constants"
 import { getChallengeProgress, getUnits, getUserProgress, getUserSubscription } from "@/db/queries"
 import Image from "next/image"
 import { redirect } from "next/navigation"
@@ -10,10 +9,8 @@ import { redirect } from "next/navigation"
 import { format } from 'date-fns';
 import { Button } from "@/components/ui/button"
 import { getUserPointsHearts } from "@/usefulFunctions"
-import { progressType } from "@/db/schema"
-import { Crown, BarChartBig } from "lucide-react"
 import { Achievement } from "@/components/achievments"
-
+import { BuyMine } from "@/components/buy-mine"
 
 
 const ProgressPage = async () => {
@@ -90,12 +87,16 @@ const ProgressPage = async () => {
 					}
 				})
 
+			
+
 			return {
 				lesson: lesson.id,
 				unitId: unit.id,
 				unitTitle: unit.title,
 				done: [ numChallengesInLesson,  doneRight, doneWrong],
-				percentageDoneLesson: Math.round((doneRight+doneWrong)/numChallengesInLesson * 100) / 100 
+				// percentageDoneLesson: Math.round((doneRight+doneWrong)/numChallengesInLesson * 100) / 100 
+				// percentageDoneLesson:(doneRight+doneWrong)/numChallengesInLesson 
+				percentageDoneLesson: Math.round(100*(doneRight+doneWrong)/numChallengesInLesson)
 			}
 		})
 		
@@ -112,6 +113,14 @@ const ProgressPage = async () => {
 		unitTitle: string;
 		percentageDoneLesson: number;
 	}
+
+
+
+
+
+	// console.log(infoUnitsStat[1].doneRightInLesson)
+
+
 
 
 	let lessonStat: Array<lessonDone> = [];
@@ -256,7 +265,7 @@ const ProgressPage = async () => {
 
 
 
-	const [Points, Hearts] = getUserPointsHearts(userProgress)
+	const [Points, Hearts, Gems] = getUserPointsHearts(userProgress)
 
 
     return (
@@ -264,10 +273,9 @@ const ProgressPage = async () => {
             <StickyWrapper>
                 <UserProgress 
                     activeCourse={userProgress.activeCourse}
-                    // hearts={userProgress.hearts}
-                    // points={userProgress.points}
                     hearts={Hearts}
                     points={Points}
+					gems={Gems}
                     hasActiveSubscription={isPro}
                 />
 
@@ -289,7 +297,38 @@ const ProgressPage = async () => {
                     <p className="text-muted-foreground text-center text-lg mb-6">
                         Выполняйте квесты и зарабатывайте очки
                     </p>
-                    <ul className="w-full">
+
+
+
+				
+					
+
+
+
+				<div className="flex items-center w-full p-4 gap-x-4 border-t-2">
+				
+				
+				
+				{/* <BuyMine /> */}
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+                    <ul className="w-full pt-5">
 						{/* 
 						//
 						// Прогрес КВЕСТОВ
@@ -299,10 +338,8 @@ const ProgressPage = async () => {
                             const progress = (quest.value[1] / quest.value[0]) * 100
 
                             return (
-                                <div
-                                    className="flex items-center w-full p-4 gap-x-4 border-t-2"    
-                                    key = {quest.title}
-                                >
+
+									<div key={quest.title}>
 
                                     <Image 
                                         src = '/points.svg'
@@ -418,15 +455,16 @@ const ProgressPage = async () => {
 									{
 										lessonStat.percentageDoneLesson === 0 
 										? "w-full mb-3 bg-white border-slate-200 border-2 hover:bg-slate-100 text-slate-500"
-                                    	: lessonStat.percentageDoneLesson < 0.2
+                                    	: lessonStat.percentageDoneLesson < 20
 										? "w-full mb-3 bg-green-500/5 text-green-500 border-green-300 border-2 hover:bg-sky-500/20 transition-none"
-                                    	: lessonStat.percentageDoneLesson < 0.4
+                                    	: lessonStat.percentageDoneLesson < 40
 										? "w-full mb-3 bg-green-500/10 text-green-500 border-green-300 border-2 hover:bg-sky-500/20 transition-none"
-                                    	: lessonStat.percentageDoneLesson < 0.8
+                                    	: lessonStat.percentageDoneLesson < 80
 										? "w-full mb-3 bg-green-500/20 text-green-500 border-green-300 border-2 hover:bg-sky-500/20 transition-none"
 										: "w-full mb-3 bg-green-500/30 text-green-500 border-green-300 border-2 hover:bg-sky-500/20 transition-none"
 									}>
-									    {(lessonStat.percentageDoneLesson * 100)}
+									    {/* {(lessonStat.percentageDoneLesson * 100)} */}
+									    {(lessonStat.percentageDoneLesson)}
 
                                     </Button>
 
