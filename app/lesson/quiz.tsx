@@ -219,7 +219,7 @@ export const Quiz = ({
 
         Shuffle(options)
 
-    },[activeIndex])
+    },[activeIndex, options])
 
 
 
