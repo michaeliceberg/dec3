@@ -154,7 +154,7 @@ interface progressDaysType {
     })
 
 
-    console.log(ResultLeaderTable[0])
+    // console.log(ResultLeaderTable[0])
     
 
 
