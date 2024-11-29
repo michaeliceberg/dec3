@@ -12,6 +12,7 @@ import LottieKapiSad1 from '@/public/Lottie/LottieKapiSad1.json'
 
 import LottieCroco from '@/public/Lottie/characters/LottieCroco.json'
 
+// import LegoDetail from '@/public/Lego/LegoDetail.json'
 
 
 import Lottie from "lottie-react"
@@ -56,13 +57,7 @@ export const Promo = ({
             <div className="flex items-center gap-x-4">
                 
             
-            {/* <Lottie 
-                    animationData={ isLate ? LottieCroco : LottieCroco } 
-                    width={5}
-                    height={5}
-                    size={5}
-                    
-                /> */}
+
 
                 <Lottie 
                     animationData={ isLate ? LottieKapiSad1 : LottieKapiGood1 } 
@@ -70,7 +65,6 @@ export const Promo = ({
                 />
 
 
-               
 
                 <div className="items-center">
                     <h3 className="font-bold text-lg text-center"> 

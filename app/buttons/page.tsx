@@ -20,6 +20,8 @@ const ButtonsPage = () => {
 			<Button variant='today'>0.5</Button>
 
 
+
+
 			
 		</div>
 	)

@@ -5,14 +5,15 @@ import { createStripeUrl } from "@/actions/user-subscription"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useTransition } from "react"
-import { start } from "repl"
 import { toast } from "sonner"
-import dodoPizza from '@/public/dodoPizza.png'
-import { BuyMine } from "@/components/buy-mine"
 import Lottie from "lottie-react"
 import LottiePick from '@/public/Lottie/LottiePick.json'
 import LottieCoins from '@/public/Lottie/LottieCoins.json'
 import LottieGems from '@/public/Lottie/LottieGems.json'
+
+
+
+
 
 const POINTS_TO_REFILL = 10
 
@@ -139,6 +140,14 @@ export const Items = ({
                     // loop={false}
                 /> 
 				
+
+
+
+
+
+
+
+
 
                 <div className="flex-1">
                     <p className="text-neutral-700 text-base lg:text-xl font-bold">
